@@ -1,6 +1,6 @@
 
 
-function User({id, email, first_name,last_name,avatar})
+function User({id, email, first_name,last_name,avatar,onClickInvite, isInvited})
 {
     return(
         <li>
@@ -10,7 +10,9 @@ function User({id, email, first_name,last_name,avatar})
                     <h3>{last_name} {first_name}</h3>
                     <p>{email}</p>
                 </div>
-                <div className="button">+</div>
+                <div className="button">
+                    <b onClick={() => onClickInvite(id)}>{isInvited ? '-' : '+'}</b>
+                </div>
             </div>
         </li>
     )

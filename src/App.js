@@ -7,23 +7,12 @@ import { useState, useEffect } from 'react';
 
 function App() {
   const [users, setUsers] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+  const [invites,setInvites] = useState([]);
+
   useEffect(() => {
     const fetchUsers = async () => {
-      // const payload = {
-      //   "project_slug": "<project_slug>",
-      //   "project_id": "<project_id>",
-      //   "source_type": "collection",
-      //   "source_id": "<collection_slug>",
-      //   "event": "record.created",
-      //   "action_type": "webhook",
-      //   "action_config": {
-      //     "url": "https://example.com/webhook"
-      //   }
-      // };
-
-      // try
-      // {
-        const response =  await fetch('https://reqres.in/api/users?page=2', {
+        const response =  await fetch('https://reqres.in/api/users', {
         // method: 'POST',
         headers: {
           'x-api-key': 'reqres_198c4b6237b94aafa97de3b1ca20b46c',
@@ -31,26 +20,29 @@ function App() {
         }//,
         // body: JSON.stringify(payload),
       }).then(res => res.json()).then(json => {setUsers(json.data)});
-      //const json =  await response.json();
-      //setUsers(json);
-      
-      // setUsers(response);
-      // }
-      // catch(error)
-      // {
-      //   console.log(error.message);
-      // }
-
     };
-
     fetchUsers();
   }, []);
+
+  const onChangeValue = (event) =>
+  {
+    setSearchValue(event.target.value);
+  }
+  const onClickInvite = (id) =>
+  {
+    if(invites.includes(id))setInvites(prev => prev.filter(ch => ch !== id));
+    else setInvites(prev => [...prev, id]);
+  }
 
   return (
     <div className='main'>
       {/* <Counter /> */}
       {/* <Text /> */}
-      <Users users={users} />
+      <Users 
+          users={users} 
+          searchValue={searchValue} onChangeValue={onChangeValue} 
+          invites={invites} onClickInvite={onClickInvite}
+      />
     </div>
   );
 }
